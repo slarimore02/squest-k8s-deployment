@@ -6,5 +6,5 @@ This repo used for to assist in installing a self service catalog tool - Squest 
 * A Storage Class provider for persistent volumes
 
 # Usage
-git clone https://github.com/slarimore02/squest-k8s-deployment.git
-kubectl apply -f squest-k8s-deployment/
+- git clone https://github.com/slarimore02/squest-k8s-deployment.git
+- kubectl apply -f squest-k8s-deployment/
