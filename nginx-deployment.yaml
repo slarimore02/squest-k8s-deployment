@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes/
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx
+    app: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: nginx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes/
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: nginx
+        app: nginx
+    spec:
+      containers:
+        - args:
+            - nginx
+            - -c
+            - /etc/nginx/squest/nginx.conf
+          image: nginx:alpine
+          name: nginx
+          resources: {}
+          volumeMounts:
+            - mountPath: /app/media
+              name: nginx-django-media
+              readOnly: true
+            - mountPath: /app/static
+              name: nginx-django-static
+              readOnly: true
+            - mountPath: /etc/nginx/squest/
+              name: nginx-config
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: nginx-django-media
+          persistentVolumeClaim:
+            claimName: nginx-django-media
+            readOnly: true
+        - name: nginx-django-static
+          persistentVolumeClaim:
+            claimName: nginx-django-static
+            readOnly: true
+        - name: nginx-config
+          configMap:
+            name: nginx-config
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+status: {}

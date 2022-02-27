@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-init
+data:
+  mariadb-init.sql: |
+    GRANT ALL PRIVILEGES ON `test\_squest\_db` .  * TO 'squest_user'@'%';

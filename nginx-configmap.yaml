@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    daemon off;
+    worker_processes 1;
+
+    error_log /dev/stderr info;
+
+    events {
+        worker_connections 1024;
+    }
+
+    http {
+        include              /etc/nginx/mime.types;
+        default_type         application/octet-stream;
+        sendfile             on;
+        tcp_nopush           on;
+        keepalive_timeout    65;
+        gzip                 on;
+        server_tokens        off;
+        client_max_body_size 10M;
+
+        upstream backend {
+            # squest app
+            server django:8000; # fail_timeout=1s max_fails=1;
+            # maintenance page
+            server maintenance:80 backup;
+        }
+
+        server {
+            listen 8080;
+            location /static/ {
+                alias /app/static/;
+            }
+            location /media/ {
+                alias /app/media/;
+            }
+            location / {
+                proxy_pass http://backend;
+                proxy_connect_timeout 1s;
+                proxy_set_header X-Forwarded-Host $server_name;
+                proxy_set_header X-Real-IP $remote_addr;
+                add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                add_header Front-End-Https on;
+                proxy_redirect off;
+                add_header Access-Control-Allow-Origin "https://cdnjs.cloudflare.com";
+                add_header Access-Control-Allow-Origin "https://pro.fontawesome.com";
+            }
+        }
+    }

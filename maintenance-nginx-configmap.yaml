@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: maintenance-nginx-config
+data:
+  maintenance.nginx.conf: |
+    server {
+        root /usr/share/nginx/html;
+        listen 80;
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+        location ~ \.(ttf|ttc|otf|eot|woff|font.css|css|js)$ {
+            add_header Access-Control-Allow-Origin "*";
+        }
+    }

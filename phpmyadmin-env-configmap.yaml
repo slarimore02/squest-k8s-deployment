@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  MYSQL_ROOT_PASSWORD: p@ssw0rd
+  MYSQL_USERNAME: root
+  PMA_ARBITRARY: "1"
+  PMA_HOST: db
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: phpmyadmin-env
+  name: phpmyadmin-env

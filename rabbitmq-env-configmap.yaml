@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  RABBITMQ_DEFAULT_PASS: rabbitmq
+  RABBITMQ_DEFAULT_USER: rabbitmq
+  RABBITMQ_DEFAULT_VHOST: squest
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: rabbitmq-env
+  name: rabbitmq-env

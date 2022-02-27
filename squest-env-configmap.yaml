@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  CELERY_BROKER_URL: amqp://rabbitmq:rabbitmq@rabbitmq:5672/squest
+  MYSQL_HOST: db
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: celery-beat-squest-env
+  name: squest-env

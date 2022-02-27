@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes/
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: celery-beat
+  name: celery-beat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: celery-beat
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes/
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: celery-beat
+    spec:
+      containers:
+        - args:
+            - bash
+            - -c
+            - /wait && celery -A service_catalog worker --beat -l info
+          env:
+            - name: CELERY_BROKER_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: CELERY_BROKER_URL
+                  name: squest-env
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_HOST
+                  name: squest-env
+            - name: WAIT_HOSTS
+              value: db:3306,rabbitmq:5672,django:8000
+          #image: quay.io/hewlettpackardenterprise/squest:latest
+          image: public.ecr.aws/u5z9g9z0/squest:latest
+          name: celery-beat
+          resources: {}
+          volumeMounts:
+            - mountPath: /app/static
+              name: django-static
+            - mountPath: /app/media
+              name: django-media
+            - mountPath: /app/backup
+              name: backup
+      restartPolicy: Always
+      volumes:
+        - name: django-static
+          persistentVolumeClaim:
+            claimName: django-static
+        - name: django-media
+          persistentVolumeClaim:
+            claimName: django-media
+        - name: backup
+          persistentVolumeClaim:
+            claimName: backup
+status: {}

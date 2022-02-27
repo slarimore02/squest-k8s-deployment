@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes/
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: maintenance
+  name: maintenance
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: maintenance
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes/
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: maintenance
+    spec:
+      containers:
+        - image: nginx:alpine
+          name: maintenance
+          resources: {}
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html/
+              name: maintenance-page
+            - mountPath: /etc/nginx/conf.d/
+              name: maintenance-nginx-config
+            #- mountPath: /usr/share/nginx/html/
+            #  name: maintenance-logo
+      restartPolicy: Always
+      volumes:
+        - name: maintenance-nginx-config
+          configMap:
+            name: maintenance-nginx-config
+            items:
+              - key: maintenance.nginx.conf
+                path: maintenance.nginx.conf
+        - name: maintenance-page
+          configMap:
+            name: maintenance-page
+            items:
+              - key: maintenance.html
+                path: maintenance.html
+        - name: maintenance-logo
+          configMap:
+            name: maintenance-logo
+            items:
+              - key: squest_full_logo_transparent.png
+                path: squest_full_logo_transparent.png
+status: {}

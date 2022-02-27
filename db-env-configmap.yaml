@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  MYSQL_DATABASE: squest_db
+  MYSQL_PASSWORD: squest_password
+  MYSQL_ROOT_PASSWORD: p@ssw0rd
+  MYSQL_USER: squest_user
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: db-env
+  name: db-env
