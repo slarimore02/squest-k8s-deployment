@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  REDIS_PASSWORD: redis_secret_password
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: redis-env
+  name: redis-env

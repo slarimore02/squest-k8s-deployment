@@ -33,7 +33,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   key: REDIS_PASSWORD
-                  name: docker-environment_variables-redis-env
+                  name: redis-env
           image: redis:6-alpine
           name: redis-cache
           ports:
