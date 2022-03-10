@@ -14,6 +14,6 @@ spec:
       port: 6379
       targetPort: 6379
   selector:
-    io.kompose.service: redis-cache-service
+    io.kompose.service: redis-cache
 status:
   loadBalancer: {}
