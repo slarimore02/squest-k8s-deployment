@@ -45,8 +45,8 @@ spec:
                   name: django-squest-env
             - name: WAIT_HOSTS
               value: db:3306,rabbitmq:5672
-          image: quay.io/hewlettpackardenterprise/squest:1.5.1
-          #image: public.ecr.aws/u5z9g9z0/squest:v0.1
+          #image: quay.io/hewlettpackardenterprise/squest:1.5.1
+          image: public.ecr.aws/u5z9g9z0/squest:1.5.1
           name: django
           resources: {}
           #volumeMounts:
