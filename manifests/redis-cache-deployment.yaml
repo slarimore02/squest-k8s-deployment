@@ -7,7 +7,8 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: redis-cache
-  name: redis-cache
+    app: redis-cache
+  name: redis
 spec:
   replicas: 1
   selector:
@@ -35,7 +36,7 @@ spec:
                   key: REDIS_PASSWORD
                   name: redis-env
           image: redis:6-alpine
-          name: redis-cache
+          name: redis
           ports:
             - containerPort: 6379
           resources: {}
