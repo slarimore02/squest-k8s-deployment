@@ -45,7 +45,7 @@ spec:
                   name: squest-env
             - name: WAIT_HOSTS
               value: db:3306,rabbitmq:5672
-          image: quay.io/hewlettpackardenterprise/squest:latest
+          image: public.ecr.aws/u5z9g9z0/squest:1.7.2
           imagePullPolicy: Always
           name: django
           resources: {}
